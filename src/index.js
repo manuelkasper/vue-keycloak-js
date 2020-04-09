@@ -34,6 +34,7 @@ export default {
           createAccountUrl: null,
           loadUserProfile: null,
           loadUserInfo: null,
+          updateToken: null,
           subject: null,
           idToken: null,
           idTokenParsed: null,
@@ -80,11 +81,16 @@ function init (config, watch, options) {
   keycloak.onAuthSuccess = function () {
     // Check token validity every 10 seconds (10 000 ms) and, if necessary, update the token.
     // Refresh token if it's valid for less then 60 seconds
-    const updateTokenInterval = setInterval(() => keycloak.updateToken(60).error(() => {
-      keycloak.clearToken()
-    }), 10000)
+    let updateTokenInterval
+    if (options.autoUpdateToken === true || options.autoUpdateToken === undefined) {
+      updateTokenInterval = setInterval(() => keycloak.updateToken(60).error(() => {
+        keycloak.clearToken()
+      }), 10000)
+    }
     watch.logoutFn = () => {
-      clearInterval(updateTokenInterval)
+      if (updateTokenInterval) {
+        clearInterval(updateTokenInterval)
+      }
       keycloak.logout(options.logout || {'redirectUri': config['logoutRedirectUri']})
     }
   }
@@ -111,6 +117,7 @@ function init (config, watch, options) {
       watch.hasResourceRole = keycloak.hasResourceRole
       watch.loadUserProfile = keycloak.loadUserProfile
       watch.loadUserInfo = keycloak.loadUserInfo
+      watch.updateToken = keycloak.updateToken
       watch.token = keycloak.token
       watch.subject = keycloak.subject
       watch.idToken = keycloak.idToken
@@ -130,7 +137,7 @@ function init (config, watch, options) {
 }
 
 function assertOptions (options) {
-  const {config, init, onReady, onInitError} = options
+  const {config, init, onReady, onInitError, autoUpdateToken} = options
   if (typeof config !== 'string' && !_isObject(config)) {
     return {hasError: true, error: `'config' option must be a string or an object. Found: '${config}'`}
   }
@@ -142,6 +149,9 @@ function assertOptions (options) {
   }
   if (onInitError && typeof onInitError !== 'function') {
     return {hasError: true, error: `'onInitError' option must be a function. Found: '${onInitError}'`}
+  }
+  if (autoUpdateToken !== undefined && typeof autoUpdateToken !== 'boolean') {
+    return {hasError: true, error: `'autoUpdateToken' option must be boolean. Found: '${autoUpdateToken}'`}
   }
   return {
     hasError: false,

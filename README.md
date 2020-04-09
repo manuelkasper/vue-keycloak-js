@@ -108,6 +108,7 @@ You can pass in an object as options to the plugin. The following keys are valid
 |`logout`|Object|
 |`onReady`|Function(keycloak)|
 |`onInitError`|Function(error)|
+|`autoUpdateToken`|Boolean|true
 
 ### config
 
@@ -132,7 +133,7 @@ set directly (object), must be compatible with the Keycloak JS adapter construct
 The `logoutRedirectUri` must instead be defined in [`options.logout`](#logout)
 
 See description below.
- 
+
 #### String
 
 If this option is a string, the plugin will treat it as an URL and make an HTTP GET request to it.
@@ -147,7 +148,7 @@ As such, it should be an object with valid keys/values.
 
 [See Keycloak's Javascript adapter reference](https://www.keycloak.org/docs/latest/securing_apps/index.html#javascript-adapter-reference)
 
-E.g. 
+E.g.
 
 ```
 {
@@ -231,6 +232,12 @@ This option is a callback function that is executed if Keycloak initialisation h
 The callback function has one parameter, which is the error object returned by Keycloak. Note that this may be undefined
 even though an error has occurred, as Keycloak does not return an error object in every error case.
 
+### autoUpdateToken
+
+This option, which defaults to true, can be used to disable the automatic background token refresh.
+
+When this option is set to false, the application should call `updateToken()` whenever an up-to-date token is needed.
+
 ## Examples
 
 ### Supply a configuration object for the Keycloak constructor
@@ -268,8 +275,8 @@ Vue.use(VueKeyCloak, {
 
 ### Supply init option (use `check-sso`)
 
-Remember; `login-required` is the default value for the onLoad property 
-in the init object. So without passing an `init` object as argument, the default is 
+Remember; `login-required` is the default value for the onLoad property
+in the init object. So without passing an `init` object as argument, the default is
 `{ init: 'login-required' }`
 
 ```javascript
