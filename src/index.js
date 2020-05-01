@@ -66,8 +66,7 @@ export default {
 }
 
 function init (config, watch, options) {
-  const ctor = sanitizeConfig(config)
-  const keycloak = Keycloak(ctor)
+  const keycloak = Keycloak(config)
 
   watch.$once('ready', function (cb) {
     cb && cb()
@@ -180,21 +179,4 @@ function getConfig (config) {
     }
     xhr.send()
   })
-}
-
-function sanitizeConfig(config) {
-  const renameProp = (oldProp, newProp, {[oldProp]: old, ...others}) => {
-    return {
-      [newProp]: old,
-      ...others
-    }
-  }
-  return Object.keys(config).reduce(function (previous, key) {
-    if (['authRealm', 'authUrl', 'authClientId'].includes(key)) {
-      const cleaned = key.replace('auth', '')
-      const newKey = cleaned.charAt(0).toLowerCase() + cleaned.slice(1)
-      return renameProp(key, newKey, previous)
-    }
-    return previous
-  }, config)
 }
