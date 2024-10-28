@@ -66,7 +66,7 @@ export default {
 }
 
 function init (config, watch, options) {
-  const keycloak = Keycloak(config)
+  const keycloak = new Keycloak(config)
 
   watch.$once('ready', function (cb) {
     cb && cb()
