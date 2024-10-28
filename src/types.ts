@@ -77,6 +77,7 @@ export interface VueKeycloakInstance {
   accountManagement?(): Promise<void>; // Keycloak accountManagement function
   createAccountUrl?(): string; // Keycloak createAccountUrl function
   loadUserProfile?(): Promise<KeycloakProfile>; // Keycloak loadUserProfile function
+  updateToken?(minValidity?: number): Promise<boolean>; // Keycloak updateToken function
   subject?: string; // The user id
   idToken?: string; // The base64 encoded ID token.
   idTokenParsed?: VueKeycloakTokenParsed; // The parsed id token as a JavaScript object.

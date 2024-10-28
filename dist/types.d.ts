@@ -39,6 +39,7 @@ export interface VueKeycloakInstance {
     accountManagement?(): Promise<void>;
     createAccountUrl?(): string;
     loadUserProfile?(): Promise<KeycloakProfile>;
+    updateToken?(minValidity?: number): Promise<boolean>;
     subject?: string;
     idToken?: string;
     idTokenParsed?: VueKeycloakTokenParsed;

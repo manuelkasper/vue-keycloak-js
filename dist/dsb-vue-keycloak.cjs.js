@@ -106,6 +106,7 @@ function defaultEmptyVueKeycloakInstance() {
         accountManagement: null,
         createAccountUrl: null,
         loadUserProfile: null,
+        updateToken: null,
         subject: null,
         idToken: null,
         idTokenParsed: null,
@@ -231,6 +232,7 @@ function init(config, watch, options) {
             watch.hasRealmRole = keycloak.hasRealmRole;
             watch.hasResourceRole = keycloak.hasResourceRole;
             watch.loadUserProfile = keycloak.loadUserProfile;
+            watch.updateToken = keycloak.updateToken;
             watch.token = keycloak.token;
             watch.subject = keycloak.subject;
             watch.idToken = keycloak.idToken;
