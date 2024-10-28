@@ -17,15 +17,15 @@
   },
   "homepage": "https://github.com/dsb-norge/vue-keycloak-js",
   "dependencies": {
-    "keycloak-js": "21.1.2"
+    "keycloak-js": "^25.0.6"
   },
   "keywords": [
     "vue",
     "keycloak"
   ],
   "devDependencies": {
-    "@babel/eslint-parser": "7.25.9",
     "@babel/core": "7.26.0",
+    "@babel/eslint-parser": "7.25.9",
     "@babel/preset-env": "7.26.0",
     "@rollup/plugin-babel": "5.3.1",
     "@rollup/plugin-commonjs": "25.0.8",
